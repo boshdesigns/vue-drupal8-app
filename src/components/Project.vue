@@ -1,6 +1,16 @@
 <template>
   <div class="about">
     <h1>{{ pageTitle }}</h1>
+    <ul>
+      <li v-for="page in getData" style="margin-bottom:20px;">
+        <section>
+          {{page.attributes.title}}
+        </section>
+        <section>
+          {{page.attributes.body.value}}
+        </section>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -14,7 +24,7 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://bosh.dev/jsonapi/node/page?_format=api_json')
+    this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id)
       .then(response => {
         this.getData = response.data.data
       }, response => {
