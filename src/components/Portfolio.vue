@@ -9,7 +9,7 @@
         <section>
           {{page.attributes.body.value}}
         </section>
-        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}">project link</router-link>
+        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}">{{ "Project " + page.attributes.title }}</router-link>
       </li>
     </ul>
   </div>
