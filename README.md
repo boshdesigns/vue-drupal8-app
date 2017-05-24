@@ -1,4 +1,4 @@
-# boshd8app
+# SPA Front End Vue.js 2 Project
 
 > A Vue.js project
 
