@@ -1,5 +1,5 @@
 <template>
-  <div class="Hello">
+  <div class="Home">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: 'Hello',
+  name: 'Home',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
