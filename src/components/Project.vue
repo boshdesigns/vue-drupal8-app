@@ -16,6 +16,11 @@
         <section v-if="relation.type === 'file--file'">
           <img v-bind:src="'http://bosh.dev' + relation.attributes.url" />
         </section>
+
+        <div v-if="relation.type === 'taxonomy_term--project_tags'">
+          <h2>Project Tags</h2>
+          <router-link :to="'/portfolio/' + relation.attributes.name">{{ relation.attributes.name | lowercase | hyphenate }}</router-link>
+        </div>
       </li>
     </ul>
   </div>
@@ -37,6 +42,18 @@ export default {
       }, response => {
         console.log('fail')
       })
+  },
+  filters: {
+    lowercase: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.toLowerCase()
+    },
+    hyphenate: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.replace(' ', '-')
+    }
   }
 }
 </script>
