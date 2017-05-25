@@ -19,7 +19,7 @@
 
         <div v-if="relation.type === 'taxonomy_term--project_tags'">
           <h2>Project Tags</h2>
-          <router-link :to="'/portfolio/' + relation.attributes.name">{{ relation.attributes.name | lowercase | hyphenate }}</router-link>
+          <router-link :to="'/portfolio/' + relation.attributes.name | lowercase | hyphenate ">{{ relation.attributes.name }}</router-link>
         </div>
       </li>
     </ul>
