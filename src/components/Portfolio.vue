@@ -1,8 +1,9 @@
 <template>
   <div class="about">
     <h1>{{ pageTitle }}</h1>
+    {{id}}
     <ul>
-      <li v-for="page in getData" style="margin-bottom:20px;">
+      <li v-for="page in getData.data" style="margin-bottom:20px;">
         <section>
           {{page.attributes.title}}
         </section>
@@ -25,12 +26,33 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json')
-      .then(response => {
-        this.getData = response.data.data
-      }, response => {
-        console.log('fail')
-      })
+    if (this.$route.params.id) {
+      this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[projectTag][condition][path]=field_project_tags.name&filter[projectTag][condition][value]=' + this.$route.params.id.replace('-', ' '))
+        .then(response => {
+          this.getData = response.data
+        }, response => {
+          console.log('fail')
+        })
+    } else {
+      this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&include=field_image')
+        .then(response => {
+          this.getData = response.data
+        }, response => {
+          console.log('fail')
+        })
+    }
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    },
+    unhyphenate: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.replace('-', ' ')
+    }
   }
 }
 </script>
