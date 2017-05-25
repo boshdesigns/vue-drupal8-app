@@ -2,12 +2,19 @@
   <div class="about">
     <h1>{{ pageTitle }}</h1>
     <ul>
-      <li v-for="page in getData" style="margin-bottom:20px;">
+      <li v-for="page in getData.data" style="margin-bottom:20px;">
         <section>
           {{page.attributes.title}}
         </section>
         <section>
           {{page.attributes.body.value}}
+        </section>
+      </li>
+    </ul>
+    <ul>
+      <li v-for="relation in getData.included" style="margin-bottom:20px;">
+        <section v-if="relation.type === 'file--file'">
+          <img v-bind:src="'http://bosh.dev' + relation.attributes.url" />
         </section>
       </li>
     </ul>
@@ -24,9 +31,9 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id)
+    this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id + '&include=field_image,field_project_tags')
       .then(response => {
-        this.getData = response.data.data
+        this.getData = response.data
       }, response => {
         console.log('fail')
       })
