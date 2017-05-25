@@ -1,7 +1,6 @@
 <template>
   <div class="about">
     <h1>{{ pageTitle }}</h1>
-    {{id}}
     <ul>
       <li v-for="page in getData.data" style="margin-bottom:20px;">
         <section>
