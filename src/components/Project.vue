@@ -1,26 +1,16 @@
 <template>
-  <div class="about">
-    <h1>{{ pageTitle }}</h1>
-    <ul>
-      <li v-for="page in getData.data" style="margin-bottom:20px;">
-        <section>
-          {{page.attributes.title}}
-        </section>
-        <section>
-          {{page.attributes.body.value}}
-        </section>
-      </li>
-    </ul>
-    <ul>
-      <li v-for="relation in getData.included" style="margin-bottom:20px;">
-        <section v-if="relation.type === 'file--file'">
-          <img v-bind:src="'http://bosh.dev' + relation.attributes.url" />
-        </section>
-
-        <div v-if="relation.type === 'taxonomy_term--project_tags'">
-          <h2>Project Tags</h2>
-          <router-link :to="'/portfolio/' + relation.attributes.name | lowercase | hyphenate ">{{ relation.attributes.name }}</router-link>
-        </div>
+  <div class="project">
+    <h1>{{ getData.data[0].attributes.title }}</h1>
+    <div>
+      {{ getData.data[0].attributes.body.value }}
+    </div>
+    <div class="project--images" v-for="relation in getData.included" v-if="relation.type === 'file--file'">
+      <img v-bind:src="'http://bosh.dev' + relation.attributes.url" />
+    </div>
+    <h3>Project Tags</h3>
+    <ul clas="project--tags__list">
+      <li class="project--tags" v-for="relation in getData.included" v-if="relation.type === 'taxonomy_term--project_tags'">
+        <h4><router-link :to="'/portfolio/' + relation.attributes.name | lowercase | hyphenate ">{{ relation.attributes.name }}</router-link></h4>
       </li>
     </ul>
   </div>
@@ -31,7 +21,6 @@ export default {
   name: 'project',
   data () {
     return {
-      pageTitle: 'This is a Project Page',
       getData: []
     }
   },
@@ -60,9 +49,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1, h2, h3, h4 {
   color: #42b983;
   font-weight: normal;
+  text-align: center;
 }
 
 ul {
@@ -77,5 +67,14 @@ li {
 
 a {
   color: #42b983;
+}
+
+.project--images {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+ul.project--tags__list {
+  text-align: center;
 }
 </style>
