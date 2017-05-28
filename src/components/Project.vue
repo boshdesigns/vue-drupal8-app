@@ -8,7 +8,7 @@
       <img v-bind:src="'http://bosh.dev' + relation.attributes.url" />
     </div>
     <h3>Project Tags</h3>
-    <ul clas="project--tags__list">
+    <ul class="project--tags__list">
       <li class="project--tags" v-for="relation in getData.included" v-if="relation.type === 'taxonomy_term--project_tags'">
         <h4><router-link :to="'/portfolio/' + relation.attributes.name | lowercase | hyphenate ">{{ relation.attributes.name }}</router-link></h4>
       </li>

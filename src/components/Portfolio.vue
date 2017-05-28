@@ -2,14 +2,15 @@
   <div class="about">
     <h1>{{ pageTitle }}</h1>
     <ul>
-      <li v-for="page in getData.data" style="margin-bottom:20px;">
+      <li v-for="page in getData" style="margin-bottom:20px;">
+        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}">
+          <div v-for="include in getIncluded" v-if="include.id === page.relationships.field_image.data[0].id">
+            <img v-bind:src="'http://bosh.dev' + include.attributes.url" />
+          </div>
         <section>
           {{page.attributes.title}}
         </section>
-        <section>
-          {{page.attributes.body.value}}
-        </section>
-        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}">{{ "Project " + page.attributes.title }}</router-link>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -21,21 +22,24 @@ export default {
   data () {
     return {
       pageTitle: 'Portfolio',
-      getData: []
+      getData: [],
+      getIncluded: []
     }
   },
   created: function () {
     if (this.$route.params.id) {
-      this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[projectTag][condition][path]=field_project_tags.name&filter[projectTag][condition][value]=' + this.$route.params.id.replace('-', ' '))
+      this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&include=field_image&filter[projectTag][condition][path]=field_project_tags.name&filter[projectTag][condition][value]=' + this.$route.params.id.replace('-', ' '))
         .then(response => {
-          this.getData = response.data
+          this.getData = response.body.data
+          this.getIncluded = response.body.included
         }, response => {
           console.log('fail')
         })
     } else {
       this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&include=field_image')
         .then(response => {
-          this.getData = response.data
+          this.getData = response.body.data
+          this.getIncluded = response.body.included
         }, response => {
           console.log('fail')
         })
