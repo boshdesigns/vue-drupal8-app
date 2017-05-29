@@ -1,13 +1,13 @@
 <template>
-  <div class="about">
+  <div class="portfolio">
     <h1>{{ pageTitle }}</h1>
-    <ul>
-      <li v-for="page in getData" style="margin-bottom:20px;">
-        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}">
-          <div v-for="include in getIncluded" v-if="include.id === page.relationships.field_image.data[0].id">
+    <ul class="portfolio--project__list row small-up-1 medium-up-2 large-up-4">
+      <li class="portfolio--project-link column column-block" v-for="page in getData" style="margin-bottom:20px;">
+        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}" class="portfolio--project-link">
+          <div v-for="include in getIncluded" v-if="include.id === page.relationships.field_image.data[0].id" class="portfolio--project-image">
             <img v-bind:src="'http://bosh.dev' + include.attributes.url" />
           </div>
-        <section>
+        <section class="portfolio--project-title">
           {{page.attributes.title}}
         </section>
         </router-link>
