@@ -5,11 +5,23 @@
     <title>Bish Bash Bosh Designs</title>
     <!-- load foundation 6 via CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css" />
+
   </head>
   <body>
-    <div class="row">
-      <div id="app" class="small-12 columns"></div>
-      <!-- built files will be auto injected -->
-    </div>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+    <!-- load Jquery via CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- load foundation 6 JS files via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/plugins/foundation.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/plugins/foundation.responsiveMenu.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/plugins/foundation.util.triggers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/plugins/foundation.util.mediaQuery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/js/plugins/foundation.responsiveToggle.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
   </body>
 </html>
