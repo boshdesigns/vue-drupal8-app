@@ -4,13 +4,13 @@
     <div>
       {{ getData.data[0].attributes.body.value }}
     </div>
-    <div class="project--images" v-for="relation in getData.included" v-if="relation.type === 'file--file'">
-      <img v-bind:src="'http://bosh.dev' + relation.attributes.url" />
+    <div class="project--images" v-for="file in getImages">
+      <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
     </div>
     <h3>Project Tags</h3>
     <ul class="project--tags__list">
-      <li class="project--tags" v-for="relation in getData.included" v-if="relation.type === 'taxonomy_term--project_tags'">
-        <h4><router-link :to="'/portfolio/' + relation.attributes.name | lowercase | hyphenate ">{{ relation.attributes.name }}</router-link></h4>
+      <li class="project--tags" v-for="taxonomy in getTaxonomy">
+        <h4><router-link :to="'/portfolio/' + taxonomy.attributes.name | lowercase | hyphenate ">{{ taxonomy.attributes.name }}</router-link></h4>
       </li>
     </ul>
   </div>
@@ -21,13 +21,25 @@ export default {
   name: 'project',
   data () {
     return {
-      getData: []
+      getData: null,
+      getTaxonomy: [],
+      getImages: []
     }
   },
-  created: function () {
+  created () {
     this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id + '&include=field_image,field_project_tags')
       .then(response => {
+        let self = this
         this.getData = response.data
+        if (typeof response.data.included !== 'undefined') {
+          response.data.included.forEach(function (included) {
+            if (included.type === 'file--file') {
+              self.getImages.push(included)
+            } else if (included.type === 'taxonomy_term--project_tags') {
+              self.getTaxonomy.push(included)
+            }
+          })
+        }
       }, response => {
         console.log('fail')
       })
