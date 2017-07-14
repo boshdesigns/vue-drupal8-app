@@ -29,8 +29,11 @@ export default {
   created () {
     this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id + '&include=field_image,field_project_tags')
       .then(response => {
+        // point to the vue instance for later
         let self = this
+        // assign the data
         this.getData = response.data
+        // push included data to related arrays
         if (typeof response.data.included !== 'undefined') {
           response.data.included.forEach(function (included) {
             if (included.type === 'file--file') {
