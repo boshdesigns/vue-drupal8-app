@@ -1,24 +1,18 @@
 <template>
   <div class="portfolio">
-    <h1>{{ getIncluded }}</h1>
-    <div v-for="data in filterBy">
-      {{ data }}
-    </div>
-    <!-- <div v-for="page in filterBy">
-      {{page}}
-    </div> -->
-    <!-- <ul class="portfolio--project__list row small-up-1 medium-only-2 large-up-4">
-      <li class="portfolio--project-link column column-block" v-for="page in getData" style="margin-bottom:20px;">
-        <router-link :to="{ name: 'Project', params: { id: page.attributes.field_slug }}" class="portfolio--project-link">
-          <div v-for="file in getImages" v-if="file.id === page.relationships.field_image.data[0].id" class="portfolio--project-image">
+    <h1 v-cloak>{{ pageTitle }}</h1>
+    <ul class="portfolio--project__list row small-up-1 medium-only-2 large-up-4">
+      <li class="portfolio--project-link column column-block" v-for="data in filteredData" style="margin-bottom:20px;">
+        <router-link :to="{ name: 'Project', params: { id: data.attributes.field_slug }}" class="portfolio--project-link">
+          <div v-for="file in getImages" v-if="file.id === data.relationships.field_image.data[0].id" class="portfolio--project-image">
             <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
           </div>
-        <section class="portfolio--project-title">
-          {{page.attributes.title}}
+        <section class="portfolio--project-title" v-cloak>
+          {{data.attributes.title}}
         </section>
         </router-link>
       </li>
-    </ul> -->
+    </ul> 
   </div>
 </template>
 
@@ -27,7 +21,8 @@ export default {
   name: 'portfolio',
   data () {
     return {
-      pageTitle: 'Portfolio',
+      defaultTitle: 'Portfolio',
+      pageTitle: '',
       getData: [],
       getImages: [],
       getIncluded: [],
@@ -49,11 +44,18 @@ export default {
             }
           })
         }
+        // If the param id exist
         if (this.$route.params.id) {
           this.param = this.toTitleCase(this.$route.params.id.replace('-', ' '))
+          // Update the page title to include the param id
+          let newTitle = this.param + ' ' + this.defaultTitle
+          this.pageTitle = newTitle
+        } else {
+          // else return the default page title
+          this.pageTitle = this.defaultTitle
         }
       }, response => {
-        console.log('fail')
+        console.log('the call failed for some reason')
       })
   },
   methods: {
@@ -64,18 +66,29 @@ export default {
     }
   },
   computed: {
-    filterBy: function () {
-      // let self = this
-      console.log(this.getIncluded)
-      // if (this.getIncluded.attributes.name === this.param) {
-      //   // let id = this.getIncluded.id
-      //   console.log(this.getIncluded.id)
-      // }
-      return this.getData.filter(function (e) {
-        e.relationships.field_project_tags.data.forEach(function (more) {
-          return more.id
+    filteredData: function () {
+      if (this.param) {
+        let self = this
+        // Set up the filtered data array
+        let filterData = []
+        // loop through the data and grab the correct data based on the param
+        this.getIncluded.forEach(function (included) {
+          if (included.type === 'taxonomy_term--project_tags' && included.attributes.name === self.param) {
+            let taxID = included.id
+            self.getData.filter(function (data) {
+              data.relationships.field_project_tags.data.forEach(function (info) {
+                if (info.id === taxID) {
+                  filterData.push(data)
+                }
+              })
+            })
+          }
         })
-      })
+        // return the filtered data array
+        return filterData
+      } else {
+        return this.getData
+      }
     }
   },
   filters: {
@@ -95,9 +108,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+[v-cloak] {
+  display: none;
+}
 h1, h2 {
   color: #42b983;
   font-weight: normal;
+  text-align: center;
 }
 
 ul {

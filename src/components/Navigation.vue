@@ -7,18 +7,18 @@
 
     <div class="top-bar" id="example-menu">
       <div class="top-bar-left">
-        <section class="site-name"><router-link :to="'/'">Bish Bash Bosh Designs</router-link></section>
+        <section class="site-name"><a href="/">Bish Bash Bosh Designs</a></section>
       </div>
       <div class="top-bar-right">
         <ul class="menu">
           <li>
-            <router-link :to="'/about'">About</router-link>
+            <a href="/about">About</a>
           </li>
           <li>
-            <router-link :to="'/portfolio'">Portfolio</router-link>
+            <a href="/portfolio">Portfolio</a>
           </li>
           <li>
-            <router-link :to="'/contact'">Contact</router-link>
+            <a href="/contact">Contact</a>
           </li>
         </ul>
       </div>
