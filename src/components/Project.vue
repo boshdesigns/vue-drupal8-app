@@ -1,5 +1,5 @@
 <template>
-  <div class="project">
+  <div class="project container">
     <h1>{{ getData.data[0].attributes.title }}</h1>
     <div>
       {{ getData.data[0].attributes.body.value }}

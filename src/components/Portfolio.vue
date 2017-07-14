@@ -1,8 +1,8 @@
 <template>
-  <div class="portfolio">
+  <div class="portfolio container">
     <h1 v-cloak>{{ pageTitle }}</h1>
-    <ul class="portfolio--project__list row small-up-1 medium-only-2 large-up-4">
-      <li class="portfolio--project-link column column-block" v-for="data in filteredData" style="margin-bottom:20px;">
+    <ul class="portfolio--project__list block-grid-xs-1 block-grid-sm-2 block-grid-lg-4">
+      <li class="portfolio--project-link" v-for="data in filteredData">
         <router-link :to="{ name: 'Project', params: { id: data.attributes.field_slug }}" class="portfolio--project-link">
           <div v-for="file in getImages" v-if="file.id === data.relationships.field_image.data[0].id" class="portfolio--project-image">
             <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
@@ -115,16 +115,6 @@ h1, h2 {
   color: #42b983;
   font-weight: normal;
   text-align: center;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
 }
 
 a {
