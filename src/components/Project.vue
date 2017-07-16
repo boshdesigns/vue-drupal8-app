@@ -1,8 +1,8 @@
 <template>
   <div class="project container">
-    <h1>{{ getData.data[0].attributes.title }}</h1>
-    <div>
-      {{ getData.data[0].attributes.body.value }}
+    <h1 class="project--title">{{ projectTitle }}</h1>
+    <div class="project--body">
+      {{ projectBody }}
     </div>
     <div class="project--images" v-for="file in getImages">
       <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
@@ -23,7 +23,9 @@ export default {
     return {
       getData: null,
       getTaxonomy: [],
-      getImages: []
+      getImages: [],
+      projectTitle: null,
+      projectBody: null
     }
   },
   created () {
@@ -32,7 +34,18 @@ export default {
         // point to the vue instance for later
         let self = this
         // assign the data
-        this.getData = response.data
+        this.getData = response.body.data
+        // get the project title and body
+        response.body.data.forEach(function (project) {
+          if (typeof project.attributes !== 'undefined') {
+            if (project.attributes.title) {
+              self.projectTitle = project.attributes.title
+            }
+            if (project.attributes.body) {
+              self.projectBody = project.attributes.body.value
+            }
+          }
+        })
         // push included data to related arrays
         if (typeof response.data.included !== 'undefined') {
           response.data.included.forEach(function (included) {
@@ -82,6 +95,15 @@ li {
 
 a {
   color: #42b983;
+}
+
+.project--title {
+  font-size: 40px;
+}
+
+.project--body {
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .project--images {
