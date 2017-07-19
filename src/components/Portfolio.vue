@@ -12,7 +12,7 @@
         </section>
         </router-link>
       </li>
-    </ul> 
+    </ul>
   </div>
 </template>
 
@@ -48,8 +48,7 @@ export default {
         if (this.$route.params.id) {
           this.param = this.toTitleCase(this.$route.params.id.replace('-', ' '))
           // Update the page title to include the param id
-          let newTitle = this.param + ' ' + this.defaultTitle
-          this.pageTitle = newTitle
+          this.pageTitle = this.param + ' ' + this.defaultTitle
         } else {
           // else return the default page title
           this.pageTitle = this.defaultTitle

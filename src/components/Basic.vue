@@ -1,6 +1,7 @@
 <template>
-  <div class="about">
-    <h1>{{ pageTitle }}</h1>
+  <div class="page container">
+    <h1 class="page--title">{{ pageTitle }}</h1>
+    <div class="page--body" v-html="pageBody"></div>
   </div>
 </template>
 
@@ -9,16 +10,31 @@ export default {
   name: 'basic',
   data () {
     return {
-      pageTitle: 'This is a Basic Page',
+      pageTitle: null,
+      pageBody: null,
       getData: []
     }
   },
-  created: function () {
-    this.$http.get('http://bosh.dev/jsonapi/node/page?_format=api_json')
+  created () {
+    this.$http.get('http://bosh.dev/jsonapi/node/page?_format=api_json&filter[title][value]=' + this.$route.params.id.replace('-', ' ') + '')
       .then(response => {
-        this.getData = response.data.data
+        // point to the vue instance for later
+        let self = this
+        // assign the data
+        this.getData = response.body.data
+        // get the project title and body
+        response.body.data.forEach(function (page) {
+          if (typeof page.attributes !== 'undefined') {
+            if (page.attributes.title) {
+              self.pageTitle = page.attributes.title
+            }
+            if (page.attributes.body) {
+              self.pageBody = page.attributes.body.value
+            }
+          }
+        })
       }, response => {
-        console.log('fail')
+        console.log('the call failed for some reason')
       })
   }
 }
@@ -29,6 +45,11 @@ export default {
 h1, h2 {
   color: #42b983;
   font-weight: normal;
+  text-align: center;
+}
+
+.page--body {
+  text-align: center;
 }
 
 ul {

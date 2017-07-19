@@ -1,9 +1,7 @@
 <template>
   <div class="project container">
     <h1 class="project--title">{{ projectTitle }}</h1>
-    <div class="project--body">
-      {{ projectBody }}
-    </div>
+    <div class="project--body" v-html="projectBody"></div>
     <div class="project--images" v-for="file in getImages">
       <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
     </div>
@@ -57,7 +55,7 @@ export default {
           })
         }
       }, response => {
-        console.log('fail')
+        console.log('the call failed for some reason')
       })
   },
   filters: {
