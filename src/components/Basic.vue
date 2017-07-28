@@ -23,7 +23,7 @@ export default {
         // assign the data
         this.getData = response.body.data
         // get the project title and body
-        response.body.data.forEach(function (page) {
+        for (let page of response.body.data) {
           if (typeof page.attributes !== 'undefined') {
             if (page.attributes.title) {
               self.pageTitle = page.attributes.title
@@ -32,7 +32,7 @@ export default {
               self.pageBody = page.attributes.body.value
             }
           }
-        })
+        }
       }, response => {
         console.log('the call failed for some reason')
       })

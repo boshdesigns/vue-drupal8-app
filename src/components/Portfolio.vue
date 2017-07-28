@@ -38,11 +38,11 @@ export default {
         let self = this
         // push included data to related arrays
         if (typeof response.data.included !== 'undefined') {
-          response.data.included.forEach(function (included) {
+          for (let included of response.data.included) {
             if (included.type === 'file--file') {
               self.getImages.push(included)
             }
-          })
+          }
         }
         // If the param id exist
         if (this.$route.params.id) {
@@ -71,7 +71,7 @@ export default {
         // Set up the filtered data array
         let filterData = []
         // loop through the data and grab the correct data based on the param
-        this.getIncluded.forEach(function (included) {
+        for (let included of this.getIncluded) {
           if (included.type === 'taxonomy_term--project_tags' && included.attributes.name === self.param) {
             let taxID = included.id
             self.getData.filter(function (data) {
@@ -82,7 +82,7 @@ export default {
               })
             })
           }
-        })
+        }
         // return the filtered data array
         return filterData
       } else {

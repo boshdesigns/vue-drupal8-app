@@ -1,16 +1,41 @@
 <template>
-  <div class="Home">
-    <h1>{{ msg }}</h1>
+  <div class="home container">
+    <h1 class="home--title">{{ homeTitle }}</h1>
+    <div class="home--body" v-html="homeBody"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: 'home',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      homeTitle: null,
+      homeBody: null,
+      getData: []
     }
+  },
+  created () {
+    this.$http.get('http://bosh.dev/jsonapi/node/homepage?_format=api_json&include=field_slideshow')
+      .then(response => {
+        // point to the vue instance for later
+        let self = this
+        // assign the data
+        this.getData = response.body.data
+        // get the project title and body
+        for (let home of response.body.data) {
+          if (typeof home.attributes !== 'undefined') {
+            if (home.attributes.title) {
+              self.homeTitle = home.attributes.title
+            }
+            if (home.attributes.body) {
+              self.homeBody = home.attributes.body.value
+            }
+          }
+        }
+      }, response => {
+        console.log('the call failed for some reason')
+      })
   }
 }
 </script>

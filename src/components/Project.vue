@@ -34,7 +34,7 @@ export default {
         // assign the data
         this.getData = response.body.data
         // get the project title and body
-        response.body.data.forEach(function (project) {
+        for (let project of response.body.data) {
           if (typeof project.attributes !== 'undefined') {
             if (project.attributes.title) {
               self.projectTitle = project.attributes.title
@@ -43,16 +43,16 @@ export default {
               self.projectBody = project.attributes.body.value
             }
           }
-        })
+        }
         // push included data to related arrays
         if (typeof response.data.included !== 'undefined') {
-          response.data.included.forEach(function (included) {
+          for (let included of response.data.included) {
             if (included.type === 'file--file') {
               self.getImages.push(included)
             } else if (included.type === 'taxonomy_term--project_tags') {
               self.getTaxonomy.push(included)
             }
-          })
+          }
         }
       }, response => {
         console.log('the call failed for some reason')
