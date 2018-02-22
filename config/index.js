@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       // '/jsonapi': {
-      //   target: 'http://bosh.dev',
+      //   target: 'http://bosh.local',
       //   changeOrigin: true,
       //   pathRewrite: {
       //     '^/jsonapi': ''

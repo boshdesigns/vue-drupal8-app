@@ -3,7 +3,7 @@
     <h1 class="project--title">{{ projectTitle }}</h1>
     <div class="project--body" v-html="projectBody"></div>
     <div class="project--images" v-for="file in getImages">
-      <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
+      <img v-bind:src="'http://bosh.local' + file.attributes.url" />
     </div>
     <h3>Project Tags</h3>
     <ul class="project--tags__list">
@@ -27,7 +27,7 @@ export default {
     }
   },
   created () {
-    this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id + '&include=field_image,field_project_tags')
+    this.$http.get('http://bosh.local/jsonapi/node/project?_format=api_json&filter[field_slug][value]=' + this.$route.params.id + '&include=field_image,field_project_tags')
       .then(response => {
         // point to the vue instance for later
         let self = this

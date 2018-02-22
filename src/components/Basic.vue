@@ -16,7 +16,7 @@ export default {
     }
   },
   created () {
-    this.$http.get('http://bosh.dev/jsonapi/node/page?_format=api_json&filter[title][value]=' + this.$route.params.id.replace('-', ' ') + '')
+    this.$http.get('http://bosh.local/jsonapi/node/page?_format=api_json&filter[title][value]=' + this.$route.params.id.replace('-', ' ') + '')
       .then(response => {
         // point to the vue instance for later
         let self = this

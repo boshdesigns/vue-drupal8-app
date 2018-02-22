@@ -5,7 +5,7 @@
       <li class="portfolio--project-link" v-for="data in filteredData">
         <router-link :to="{ name: 'Project', params: { id: data.attributes.field_slug }}" class="portfolio--project-link">
           <div v-for="file in getImages" v-if="file.id === data.relationships.field_image.data[0].id" class="portfolio--project-image">
-            <img v-bind:src="'http://bosh.dev' + file.attributes.url" />
+            <img v-bind:src="'http://bosh.local' + file.attributes.url" /><!-- TODO: set up img alt + title tags -->
           </div>
         <section class="portfolio--project-title" v-cloak>
           {{data.attributes.title}}
@@ -30,7 +30,7 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://bosh.dev/jsonapi/node/project?_format=api_json&include=field_image,field_project_tags')
+    this.$http.get('http://bosh.local/jsonapi/node/project?_format=api_json&include=field_image,field_project_tags')
       .then(response => {
         this.getData = response.body.data
         this.getIncluded = response.body.included
